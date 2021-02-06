@@ -23,3 +23,8 @@ body {
   font-family: "Lato";
   letter-spacing: 0.05em;
 }
+
+hr {
+  width: 75%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.727);
+}

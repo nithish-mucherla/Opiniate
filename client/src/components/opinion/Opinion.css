@@ -1,0 +1,33 @@
+.author {
+  font-size: 10px;
+  font-family: "Lato";
+  color: #3fb557;
+  letter-spacing: 0.03em;
+}
+
+.opinionText {
+  font-family: "Press Start 2P";
+  font-size: 12px;
+  color: white;
+  padding: 2vw;
+  letter-spacing: 0.02em;
+  line-height: 0.05em;
+}
+
+@media only screen and (orientation: landscape) {
+  .author {
+    font-size: 14px;
+    font-family: "Lato";
+    color: #3fb557;
+  }
+
+  .opinionText {
+    font-family: "Press Start 2P";
+    font-size: 16px;
+    color: white;
+    padding: 2vw;
+    line-height: 1em;
+    letter-spacing: 0.02em;
+    line-height: 0.05em;
+  }
+}

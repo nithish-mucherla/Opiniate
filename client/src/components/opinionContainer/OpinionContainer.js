@@ -3,13 +3,14 @@ import { Grid } from "@material-ui/core";
 import Loader from "../../loader.gif";
 import TruffleContract from "@truffle/contract";
 import OpinionsContract from "../../contracts/Opinions.json";
+import Opinion from "../opinion/Opinion.js";
 
 function OpinionContainer(props) {
   const [state, setState] = useState({
     isDeployedOnNetwork: false,
     accounts: null,
-    opinons: null,
-    opinonCount: null,
+    opinions: null,
+    opinionCount: null,
     opinionContractInstance: null,
     netId: null,
   });
@@ -38,6 +39,11 @@ function OpinionContainer(props) {
       const opinions = [];
       for (let i = opinionCount.toNumber(); i > 0; i--) {
         const opinion = await opinionContractInstance.opinions(i);
+        opinions.push({
+          id: opinion.id,
+          author: opinion.author,
+          opinion: opinion.opinion,
+        });
       }
       setState((prevState) => {
         return {
@@ -46,6 +52,7 @@ function OpinionContainer(props) {
           opinions: opinions,
           opinionCount: opinionCount.toNumber(),
           isDeployedOnNetwork: true,
+          opinionContractInstance: opinionContractInstance,
         };
       });
       setLoading(false);
@@ -64,11 +71,20 @@ function OpinionContainer(props) {
 
   if (!loading) {
     if (state.isDeployedOnNetwork) {
-      return <div>opinions</div>;
+      return (
+        <Grid container direction="column">
+          {state.opinions.map((op) => (
+            <React.Fragment key={op.id}>
+              <Opinion author={op.author} opinion={op.opinion} id={op.id} />
+              <hr />
+            </React.Fragment>
+          ))}
+        </Grid>
+      );
     }
     return <div>Not deployed on the current network</div>;
   }
-  return <img src={Loader} alt="loader" />;
+  return <img src={Loader} alt="loader" className="loader" />;
 }
 
 export default OpinionContainer;
