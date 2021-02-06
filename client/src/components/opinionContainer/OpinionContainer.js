@@ -1,11 +1,28 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Grid } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 import Loader from "../../loader.gif";
 import TruffleContract from "@truffle/contract";
 import OpinionsContract from "../../contracts/Opinions.json";
 import Opinion from "../opinion/Opinion.js";
+import "./OpinionContainer.css";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "#ffffff",
+      fontFamily: "Lato",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#ffffff",
+      fontFamily: "Lato",
+    },
+  },
+});
 
 function OpinionContainer(props) {
+  const classes = useStyles();
   const [state, setState] = useState({
     isDeployedOnNetwork: false,
     accounts: null,
@@ -15,10 +32,16 @@ function OpinionContainer(props) {
     netId: null,
   });
   const [loading, setLoading] = useState(true);
+  const [textField, setTextField] = useState({
+    error: "",
+    value: "",
+    isValid: true,
+  });
 
   window.ethereum.on("accountsChanged", (accounts) => {
     setState({ ...state, accounts: accounts });
   });
+
   window.ethereum.on("chainChanged", (chainId) => {
     (async () => {
       const netId = await props.web3.eth.net.getId();
@@ -69,10 +92,84 @@ function OpinionContainer(props) {
     })();
   }, [props.web3, loadBlockchainData]);
 
+  const loadUserAccounts = async () => {
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    setState((prevState) => {
+      return { ...prevState, accounts: accounts };
+    });
+  };
+
+  const Opiniate = async () => {
+    if (!textField.value.trim()) {
+      setTextField({
+        isValid: false,
+        value: "",
+        error: "Please enter your opinion",
+      });
+    }
+    const tx = await state.opinionContractInstance.opiniate(
+      textField.value.trim(),
+      {
+        from: state.accounts[0],
+      }
+    );
+    if (tx) {
+      setState((prevState) => {
+        return {
+          ...prevState,
+          opinionCount: prevState.opinionCount + 1,
+          opinions: [
+            {
+              id: prevState.opinionCount + 1,
+              author: state.accounts[0],
+              opinion: textField.value.trim(),
+            },
+            ...prevState.opinions,
+          ],
+        };
+      });
+      setTextField({ ...textField, value: "" });
+    }
+  };
+
+  const handleChange = (e) => {
+    setTextField({ value: e.target.value, error: "", isValid: true });
+  };
+
   if (!loading) {
     if (state.isDeployedOnNetwork) {
       return (
         <Grid container direction="column">
+          <Grid item className="userActionDisplay">
+            {state.accounts ? (
+              <>
+                <TextField
+                  label="Your Opinion"
+                  multiline
+                  rows={4}
+                  value={textField.value}
+                  onChange={(e) => handleChange(e)}
+                  error={!textField.isValid}
+                  helperText={textField.error}
+                  className={classes.root}
+                />
+                <br />
+                <br />
+                <Button className="buttonPrimary" onClick={() => Opiniate()}>
+                  publish
+                </Button>
+              </>
+            ) : (
+              <Button
+                className="buttonPrimary"
+                onClick={() => loadUserAccounts()}
+              >
+                Connect to Ethereum
+              </Button>
+            )}
+          </Grid>
           {state.opinions.map((op) => (
             <React.Fragment key={op.id}>
               <Opinion author={op.author} opinion={op.opinion} id={op.id} />

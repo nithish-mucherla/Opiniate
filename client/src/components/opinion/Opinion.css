@@ -1,3 +1,7 @@
+.opinion {
+  padding-top: 4vh;
+}
+
 .author {
   font-size: 10px;
   font-family: "Lato";
@@ -5,16 +9,25 @@
   letter-spacing: 0.03em;
 }
 
+.identicon {
+  width: 30px;
+  height: 30px;
+}
+
 .opinionText {
   font-family: "Press Start 2P";
   font-size: 12px;
   color: white;
-  padding: 2vw;
-  letter-spacing: 0.02em;
-  line-height: 0.05em;
+  padding: 4vh 0;
+  letter-spacing: 0.05em;
+  line-height: 1.6em;
 }
 
 @media only screen and (orientation: landscape) {
+  .opinion {
+    padding-top: 3vw;
+  }
+
   .author {
     font-size: 14px;
     font-family: "Lato";
@@ -23,11 +36,15 @@
 
   .opinionText {
     font-family: "Press Start 2P";
-    font-size: 16px;
+    font-size: 14px;
     color: white;
-    padding: 2vw;
-    line-height: 1em;
-    letter-spacing: 0.02em;
-    line-height: 0.05em;
+    padding: 3vw 0;
+    line-height: 1.6em;
+    letter-spacing: 0.05em;
+  }
+
+  .identicon {
+    width: 50px;
+    height: 50px;
   }
 }
