@@ -21,7 +21,11 @@ const App = (props) => {
         <img src={Loader} alt="loader" />
       );
     }
-    return <div>Install Metamask or other dapp browsers</div>;
+    return (
+      <div className="helperText">
+        To continue, you'll have to install Metamask or other dapp browsers.
+      </div>
+    );
   };
   return (
     <Grid container className="App">

@@ -1,8 +1,10 @@
 .bottomNav {
-  padding: 10vh 0vh 7vh 0;
+  padding: 12vh 0vh 3vh 0;
 }
 
 .credits {
   color: #6ebfc2;
-  padding: 5vh 0;
+  padding: 0 0 5vh 0;
+  font-family: "Lato";
+  letter-spacing: 0.03em;
 }

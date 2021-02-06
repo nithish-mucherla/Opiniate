@@ -7,6 +7,7 @@ import Opinion from "../opinion/Opinion.js";
 import "./OpinionContainer.css";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
+import "../../App.css";
 
 const useStyles = makeStyles({
   root: {
@@ -37,18 +38,34 @@ function OpinionContainer(props) {
     value: "",
     isValid: true,
   });
-
-  window.ethereum.on("accountsChanged", (accounts) => {
-    setState({ ...state, accounts: accounts });
+  const [error, setError] = useState("");
+  window.ethereum.on("accountsChanged", (accountss) => {
+    setState((prevState) => {
+      return { ...prevState, accounts: accountss.length ? accountss : null };
+    });
   });
 
   window.ethereum.on("chainChanged", (chainId) => {
     (async () => {
-      const netId = await props.web3.eth.net.getId();
-      if (OpinionsContract.networks[netId]) {
+      try {
+        const netId = await props.web3.eth.net.getId();
+        console.log("hi");
         setLoading(true);
-        await loadBlockchainData(netId);
-      } else setState({ ...state, isDeployedOnNetwork: false });
+        if (OpinionsContract.networks[netId]) {
+          try {
+            await loadBlockchainData(netId);
+          } catch (err) {
+            setError("Unable to process the blockchain data, try again later.");
+          }
+        } else {
+          setState({ ...state, isDeployedOnNetwork: false });
+        }
+        setLoading(false);
+      } catch (err) {
+        setError(
+          "Unable to connect to the selected network, try switching to other networks."
+        );
+      }
     })();
   });
 
@@ -85,20 +102,43 @@ function OpinionContainer(props) {
 
   useEffect(() => {
     (async () => {
-      const netId = await props.web3.eth.net.getId();
-      if (OpinionsContract.networks[netId]) {
-        await loadBlockchainData(netId);
+      try {
+        const netId = await props.web3.eth.net.getId();
+        if (OpinionsContract.networks[netId]) {
+          try {
+            await loadBlockchainData(netId);
+          } catch (err) {
+            setError("Unable to process the blockchain data, try again later.");
+          }
+        } else {
+          setState((prevState) => {
+            return { ...prevState, isDeployedOnNetwork: false };
+          });
+          setLoading(false);
+        }
+      } catch (err) {
+        setError(
+          `Unable to detect any default local-networks. Please switch to other network and refresh the page`
+        );
+        setLoading(false);
       }
     })();
   }, [props.web3, loadBlockchainData]);
 
   const loadUserAccounts = async () => {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    setState((prevState) => {
-      return { ...prevState, accounts: accounts };
-    });
+    try {
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      setState((prevState) => {
+        return { ...prevState, accounts: accounts };
+      });
+    } catch (err) {
+      setError(err.message);
+      setState((prevState) => {
+        return { ...prevState, accounts: null };
+      });
+    }
   };
 
   const Opiniate = async () => {
@@ -108,14 +148,16 @@ function OpinionContainer(props) {
         value: "",
         error: "Please enter your opinion",
       });
+      return;
     }
-    const tx = await state.opinionContractInstance.opiniate(
-      textField.value.trim(),
-      {
-        from: state.accounts[0],
-      }
-    );
-    if (tx) {
+    try {
+      const tx = await state.opinionContractInstance.opiniate(
+        textField.value.trim(),
+        {
+          from: state.accounts[0],
+        }
+      );
+      console.log(tx);
       setState((prevState) => {
         return {
           ...prevState,
@@ -131,6 +173,10 @@ function OpinionContainer(props) {
         };
       });
       setTextField({ ...textField, value: "" });
+    } catch (error) {
+      setError(
+        `Unable to publish the opinion, try again later. ${error.message}`
+      );
     }
   };
 
@@ -139,6 +185,7 @@ function OpinionContainer(props) {
   };
 
   if (!loading) {
+    if (error) return <div className="helperText">{error}</div>;
     if (state.isDeployedOnNetwork) {
       return (
         <Grid container direction="column">
@@ -179,7 +226,12 @@ function OpinionContainer(props) {
         </Grid>
       );
     }
-    return <div>Not deployed on the current network</div>;
+    return (
+      <div className="helperText">
+        Smart contract not deployed on the current network! Try switching to
+        other networks.
+      </div>
+    );
   }
   return <img src={Loader} alt="loader" className="loader" />;
 }

@@ -28,3 +28,9 @@ hr {
   width: 75%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.727);
 }
+
+.helperText {
+  color: #d19369;
+  font-family: "Lato";
+  letter-spacing: 0.03em;
+}
