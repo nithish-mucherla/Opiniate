@@ -1,0 +1,25 @@
+.App {
+  height: 100%;
+  text-align: center;
+  background-color: #333333;
+}
+
+body {
+  background-color: #333333;
+}
+
+.headerContainer {
+  text-align: center;
+  color: white;
+  padding: 10vh 0;
+}
+
+.header {
+  font-family: "Pacifico";
+  font-size: 70px;
+}
+
+.caption {
+  font-family: "Lato";
+  letter-spacing: 0.05em;
+}
