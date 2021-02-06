@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import getWeb3 from "./getWeb3";
 import { Grid } from "@material-ui/core";
 import Loader from "./loader.gif";
-
 import "./App.css";
 import OpinionContainer from "./components/opinionContainer/OpinionContainer";
+import BottomNav from "./components/bottomNav/bottomNav.js";
 
 const App = (props) => {
   const [state, setState] = useState({ web3: null });
@@ -34,6 +34,7 @@ const App = (props) => {
         <Grid item xs={12}>
           <Content />
         </Grid>
+        <BottomNav />
       </Grid>
       <Grid item xs={1} />
     </Grid>
