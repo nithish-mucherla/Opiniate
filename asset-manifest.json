@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/opiniate/static/css/main.8b67abcc.chunk.css",
+    "main.js": "/opiniate/static/js/main.4be15923.chunk.js",
+    "main.js.map": "/opiniate/static/js/main.4be15923.chunk.js.map",
+    "runtime-main.js": "/opiniate/static/js/runtime-main.bdf08cde.js",
+    "runtime-main.js.map": "/opiniate/static/js/runtime-main.bdf08cde.js.map",
+    "static/js/2.f299a9e6.chunk.js": "/opiniate/static/js/2.f299a9e6.chunk.js",
+    "static/js/2.f299a9e6.chunk.js.map": "/opiniate/static/js/2.f299a9e6.chunk.js.map",
+    "index.html": "/opiniate/index.html",
+    "precache-manifest.56756af129841579904435ca62aaac37.js": "/opiniate/precache-manifest.56756af129841579904435ca62aaac37.js",
+    "service-worker.js": "/opiniate/service-worker.js",
+    "static/css/main.8b67abcc.chunk.css.map": "/opiniate/static/css/main.8b67abcc.chunk.css.map",
+    "static/media/loader.gif": "/opiniate/static/media/loader.edf18a80.gif"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.bdf08cde.js",
+    "static/js/2.f299a9e6.chunk.js",
+    "static/css/main.8b67abcc.chunk.css",
+    "static/js/main.4be15923.chunk.js"
+  ]
+}
