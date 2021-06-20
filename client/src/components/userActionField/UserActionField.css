@@ -1,0 +1,17 @@
+.userActionDisplay {
+  padding: 2vh 0 12vh 0;
+}
+
+.buttonPrimary {
+  font-family: "Lato" !important;
+  color: white !important;
+  background-color: #238636 !important;
+  padding-left: 5vw !important;
+  padding-right: 5vw !important;
+}
+
+@media only screen and (orientation: landscape) {
+  .userActionDisplay {
+    padding: 2vw 0 10vw 0;
+  }
+}

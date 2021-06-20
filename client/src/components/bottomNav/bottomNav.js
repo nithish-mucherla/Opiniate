@@ -46,7 +46,7 @@ function BottomNav(props) {
         </Grid>
         <Grid item>
           <IconButton>
-            <a href="https://nithishmucherla.tech" rel="noopener">
+            <a href="https://www.nithish-mucherla.tech" rel="noopener">
               <Language color="action" />
             </a>
           </IconButton>
